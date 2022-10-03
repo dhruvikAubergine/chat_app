@@ -1,0 +1,44 @@
+name: chat_app
+description: A Very Good Project created by Very Good CLI.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: 3.3.1
+
+dependencies:
+  badges: ^2.0.3
+  bloc: ^8.1.0
+  build_runner: ^2.2.0
+  cloud_firestore: ^3.4.8
+  equatable: ^2.0.5
+  firebase_auth: ^3.9.0
+  firebase_core: ^1.22.0
+  firebase_storage: ^10.3.8
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_chat_bubble: ^2.0.0
+  flutter_localizations:
+    sdk: flutter
+  image_picker: ^0.8.5+3
+  intl: ^0.17.0
+  json_serializable: ^6.3.1
+  provider: ^6.0.3
+
+
+
+dev_dependencies:
+  bloc_test: ^9.1.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^0.3.0
+  very_good_analysis: ^3.0.2
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/person.png

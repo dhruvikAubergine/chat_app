@@ -16,6 +16,11 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         title: const Text('Profile'),
       ),
+      body: const SafeArea(
+        child: Center(
+          child: Text('user'),
+        ),
+      ),
     );
   }
 }

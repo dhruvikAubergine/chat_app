@@ -8,11 +8,11 @@
 import 'package:chat_app/features/authentication/pages/Authentication_page.dart';
 import 'package:chat_app/features/authentication/pages/sign_up_page.dart';
 import 'package:chat_app/features/home/pages/home_page.dart';
-import 'package:chat_app/features/home/pages/profile_page.dart';
 import 'package:chat_app/features/home/pages/user_list_page.dart';
 import 'package:chat_app/features/home/providers/chats_provider.dart';
 import 'package:chat_app/features/home/providers/user_provider.dart';
 import 'package:chat_app/l10n/l10n.dart';
+import 'package:chat_app/utils/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -31,10 +31,14 @@ class App extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-          colorScheme: ColorScheme.fromSwatch(
-            accentColor: const Color(0xFF13B9FF),
-          ),
+          useMaterial3: true,
+          primaryColor: const Color(0xff7C7B9B),
+          colorScheme: AppTheme.lightColorScheme
+              .copyWith(secondary: const Color(0xffFCAAAB)),
+        ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          colorScheme: AppTheme.darkColorScheme,
         ),
         localizationsDelegates: const [
           AppLocalizations.delegate,
@@ -45,15 +49,21 @@ class App extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.data != null) {
+              Provider.of<UserProvider>(context, listen: false).getUsers();
+              Future.delayed(
+                const Duration(seconds: 2),
+                () {},
+              );
               return const HomePage();
+            } else {
+              return const AuthenticationPage();
             }
-            return const AuthenticationPage();
           },
         ),
         routes: {
           HomePage.routeName: (context) => const HomePage(),
           SignUpPage.routeName: (context) => const SignUpPage(),
-          ProfilePage.routeName: (context) => const ProfilePage(),
+          // ProfilePage.routeName: (context) => const ProfilePage(),
           UserListPage.routeName: (context) => const UserListPage(),
           AuthenticationPage.routeName: (context) => const AuthenticationPage(),
         },

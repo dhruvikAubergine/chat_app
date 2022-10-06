@@ -16,4 +16,26 @@ class HelperFunctions {
     return format
         .format(DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp)));
   }
+
+  static String getMsgTime(String timestamp) {
+    String time;
+    final duration = DateTime.now().difference(
+      DateTime.fromMillisecondsSinceEpoch(
+        int.parse(timestamp),
+      ),
+    );
+    if (1 > duration.inMinutes) {
+      time = 'Now';
+    } else if (24 > duration.inHours) {
+      time = 'Today';
+    } else if (48 > duration.inHours) {
+      time = 'Yesterday';
+    } else {
+      final msgDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(timestamp),
+      );
+      time = DateFormat('d mmm').format(msgDate);
+    }
+    return time;
+  }
 }

@@ -43,10 +43,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         email: email,
         password: password,
       );
+      await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
-      final user = Provider.of<UserProvider>(context, listen: false)
-          .getUserById(authCredential.user!.uid);
-      await AppService.instance.updateCurrentUser(user);
+      final user = await Provider.of<UserProvider>(context, listen: false)
+          .fetchCurrentUser(authCredential.user!.uid);
+      AppService.instance.updateCurrentUser(user);
+
       setState(() => _isLoading = false);
 
       if (!mounted) return;
@@ -166,7 +168,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     onPressed: () {
                       Navigator.of(context).pushNamed(SignUpPage.routeName);
                     },
-                    child: const Text('Sign Up'),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
                   )
                 ],
               )

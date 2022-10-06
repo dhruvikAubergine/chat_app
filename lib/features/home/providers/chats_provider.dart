@@ -3,7 +3,6 @@ import 'dart:developer' as dev;
 
 import 'package:chat_app/features/home/modals/conversation.dart';
 import 'package:chat_app/features/home/modals/message.dart';
-import 'package:chat_app/features/home/modals/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/widgets.dart';
@@ -13,7 +12,6 @@ class ChatsProvider extends ChangeNotifier {
   final userId = auth.FirebaseAuth.instance.currentUser!.uid;
 
   late StreamSubscription<QuerySnapshot> _conversationSubscription;
-  late StreamSubscription<QuerySnapshot> _chatSubscription;
 
   List<Conversation> conversations = [];
   List<Message> chats = [];
@@ -22,7 +20,11 @@ class ChatsProvider extends ChangeNotifier {
     try {
       _conversationSubscription = _db
           .collection('chats')
-          .where('users', arrayContains: userId)
+          // .orderBy('lastMessage.timestamp', descending: true)
+          .where(
+            'users',
+            arrayContains: auth.FirebaseAuth.instance.currentUser!.uid,
+          )
           .snapshots()
           .listen(
         (snapshot) {
@@ -38,37 +40,39 @@ class ChatsProvider extends ChangeNotifier {
     }
   }
 
-  void getChats(String convoId) {
-    try {
-      _chatSubscription = _db
-          .collection('chats')
-          .doc(convoId)
-          .collection(convoId)
-          .orderBy('timestamp', descending: true)
-          .snapshots()
-          .listen((snapshot) {
-        chats = snapshot.docs.map((document) {
-          final data = document.data()..putIfAbsent('id', () => document.id);
-          dev.log(data.toString());
-          return Message.fromJson(data);
-        }).toList();
-        notifyListeners();
-      });
-    } catch (error) {
-      dev.log(error.toString());
-    }
-  }
+  // void getChats(String convoId) {
+  //   try {
+  //     _chatSubscription = _db
+  //         .collection('chats')
+  //         .doc(convoId)
+  //         .collection(convoId)
+  //         .orderBy('timestamp', descending: true)
+  //         .snapshots()
+  //         .listen((snapshot) {
+  //       chats = snapshot.docs.map((document) {
+  //         final data = document.data()..putIfAbsent('id', () => document.id);
+  //         return Message.fromJson(data);
+  //       }).toList();
+  //       notifyListeners();
+  //     });
+  //   } catch (error) {
+  //     dev.log(error.toString());
+  //   }
+  // }
 
-  Future<UserProfile> getUserById(String id) async {
-    UserProfile user;
-    final docSnapshot = await _db.collection('users').doc(id).get();
-    if (docSnapshot.exists) {
-      user = UserProfile.fromJson(docSnapshot.data()!);
-    } else {
-      return const UserProfile();
-    }
-    return user;
-  }
+  // Future<UserProfile> getUserById(String id) async {
+  //   UserProfile user;
+  //   final docSnapshot = await _db.collection('users').doc(id).get();
+  //   //     .then((value) => user = UserProfile.fromJson(value.data()!));
+  //   // return user;
+
+  //   if (docSnapshot.exists) {
+  //     user = UserProfile.fromJson(docSnapshot.data()!);
+  //   } else {
+  //     return const UserProfile();
+  //   }
+  //   return user;
+  // }
 
   void updateMessageRead(String convoId, String messageId) {
     _db.collection('chats').doc(convoId).collection(convoId).doc(messageId).set(
@@ -114,8 +118,7 @@ class ChatsProvider extends ChangeNotifier {
     });
   }
 
-  void disposeStream() {
-    _conversationSubscription.cancel();
-    _chatSubscription.cancel();
+  Future<void> disposeStream() async {
+    await _conversationSubscription.cancel();
   }
 }

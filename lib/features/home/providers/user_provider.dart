@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chat_app/features/home/modals/user_profile.dart';
-import 'package:chat_app/services/app_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/widgets.dart';
@@ -14,11 +13,7 @@ class UserProvider extends ChangeNotifier {
   List<UserProfile> usersList = [];
 
   void getUsers() {
-    _userSubscription = _db
-        .collection('users')
-        .where('id', isNotEqualTo: AppService.instance.currentUser?.id)
-        .snapshots()
-        .listen(
+    _userSubscription = _db.collection('users').snapshots().listen(
       (snapshot) {
         usersList = snapshot.docs.map((document) {
           final data = document.data()..putIfAbsent('id', () => document.id);
@@ -33,13 +28,25 @@ class UserProvider extends ChangeNotifier {
   }
 
   UserProfile getUserById(String id) {
-    if (id != currentUserId && id != '') {
+    if (id != '') {
       return usersList.singleWhere((element) => element.id == id);
     }
     return const UserProfile();
   }
 
-  void disposeStream() {
-    _userSubscription.cancel();
+  Future<UserProfile> fetchCurrentUser(String id) async {
+    UserProfile user;
+    final docSnapshot = await _db.collection('users').doc(id).get();
+
+    if (docSnapshot.exists) {
+      user = UserProfile.fromJson(docSnapshot.data()!);
+    } else {
+      return const UserProfile();
+    }
+    return user;
+  }
+
+  Future<void> disposeStream() async {
+    await _userSubscription.cancel();
   }
 }

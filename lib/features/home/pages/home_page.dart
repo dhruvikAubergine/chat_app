@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:chat_app/features/home/modals/user_profile.dart';
 import 'package:chat_app/features/home/pages/chat_room.dart';
 import 'package:chat_app/features/home/pages/profile_page.dart';
 import 'package:chat_app/features/home/pages/user_list_page.dart';
@@ -20,6 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final currentUserId = AppService.instance.userId;
+  late UserProfile userProfile;
   String convoId(String user, String peer) {
     return '${user}_$peer';
   }
@@ -27,9 +29,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).getUsers();
-
     Provider.of<ChatsProvider>(context, listen: false).getConversations();
+    setUserDetails();
+  }
+
+  Future<void> setUserDetails() async {
+    userProfile = await Provider.of<UserProvider>(context, listen: false)
+        .fetchCurrentUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -37,30 +43,56 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat App'),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: [
-          DropdownButton(
-            icon: const Icon(Icons.more_vert),
-            items: const [
-              DropdownMenuItem(
-                value: 'profile',
-                child: Text('Profile'),
-              ),
-              DropdownMenuItem(
-                value: 'logout',
-                child: Text('Logout'),
-              )
-            ],
-            onChanged: (value) {
-              if (value == 'logout') {
-                context.read<ChatsProvider>().disposeStream();
-                context.read<UserProvider>().disposeStream();
-                FirebaseAuth.instance.signOut();
-              }
-              if (value == 'profile') {
-                Navigator.pushNamed(context, ProfilePage.routeName);
-              }
+          IconButton(
+            icon: const Icon(Icons.account_circle_rounded),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProfilePage(userProfile: userProfile);
+                  },
+                ),
+              );
+              // Navigator.pushNamed(
+              //   context,
+              //   ProfilePage.routeName,
+              // );
             },
-          ),
+          )
+          // DropdownButton(
+          //   icon: const Icon(Icons.more_vert),
+          //   items: const [
+          //     DropdownMenuItem(
+          //       value: 'profile',
+          //       child: Text('Profile'),
+          //     ),
+          //     DropdownMenuItem(
+          //       value: 'logout',
+          //       child: Text('Logout'),
+          //     )
+          //   ],
+          //   onChanged: (value) async {
+          //     if (value == 'logout') {
+          //       await context.read<ChatsProvider>().disposeStream();
+          //       if (!mounted) return;
+          //       await context.read<UserProvider>().disposeStream();
+          //       await FirebaseAuth.instance.signOut();
+          //       if (!mounted) return;
+          //       await Navigator.pushReplacement(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => const AuthenticationPage(),
+          //         ),
+          //       );
+          //     }
+          //     if (!mounted && value == 'profile') {
+          //       if (!mounted) return;
+          //       await Navigator.pushNamed(context, ProfilePage.routeName);
+          //     }
+          //   },
+          // ),
         ],
       ),
       body: Consumer<ChatsProvider>(
@@ -75,20 +107,25 @@ class _HomePageState extends State<HomePage> {
               var isNewMessageArrived = false;
 
               final item = conversations[index];
-              final duration = DateTime.now().difference(
-                DateTime.fromMillisecondsSinceEpoch(
-                  int.parse(item.lastMessage?.timestamp ?? ''),
-                ),
-              );
-              if (1 > duration.inMinutes) {
-                timeBefore = 'Now';
-              } else if (24 > duration.inHours) {
-                timeBefore = 'Today';
-              } else if (48 > duration.inHours) {
-                timeBefore = 'Yesterday';
-              } else {
-                timeBefore = '${duration.inHours} days ago';
-              }
+              // final duration =
+              // DateTime.now().difference(
+              //   DateTime.fromMillisecondsSinceEpoch(
+              //     int.parse(item.lastMessage?.timestamp ?? ''),
+              //   ),
+              // );
+              // if (1 > duration.inMinutes) {
+              //   timeBefore = 'Now';
+              // } else if (24 > duration.inHours) {
+              //   timeBefore = 'Today';
+              // } else if (48 > duration.inHours) {
+              //   timeBefore = 'Yesterday';
+              // } else {
+              //   // timeBefore = '${duration.inHours} days ago';
+              //   final msgDate = DateTime.fromMillisecondsSinceEpoch(
+              //     int.parse(item.lastMessage?.timestamp ?? ''),
+              //   );
+              //   timeBefore = DateFormat('d mmm').format(msgDate);
+              // }
               if (item.lastMessage!.idTo == currentUserId &&
                   !item.lastMessage!.read!) {
                 isNewMessageArrived = true;
@@ -117,9 +154,14 @@ class _HomePageState extends State<HomePage> {
                             ? NetworkImage(user.profilePictureUrl!)
                             : null,
                       ),
-                title: Text(user.fullName ?? ''),
+                title: Text(
+                  user.fullName ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 subtitle: Text(
                   '${item.lastMessage?.content}',
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 trailing: Column(
@@ -130,7 +172,11 @@ class _HomePageState extends State<HomePage> {
                         item.lastMessage?.timestamp ?? '',
                       ),
                     ),
-                    Text(timeBefore)
+                    Text(
+                      HelperFunctions.getMsgTime(
+                        item.lastMessage?.timestamp ?? '',
+                      ),
+                    )
                   ],
                 ),
                 onTap: () {

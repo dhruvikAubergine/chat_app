@@ -13,7 +13,7 @@ class AppService extends ChangeNotifier {
 
   String get userId => auth.FirebaseAuth.instance.currentUser!.uid;
 
-  Future<void> updateCurrentUser(UserProfile user) async {
+  void updateCurrentUser(UserProfile user) {
     if (currentUser == user) return;
     currentUser = user;
     notifyListeners();

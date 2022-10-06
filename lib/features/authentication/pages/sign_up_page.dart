@@ -117,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
         phone: phone,
         profilePictureUrl: profilePictureUrl,
       );
-      await AppService.instance.updateCurrentUser(user);
+      AppService.instance.updateCurrentUser(user);
       setState(() => _isLoading = false);
 
       if (!mounted) return;
@@ -292,7 +292,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.of(context)
                           .pushNamed(AuthenticationPage.routeName);
                     },
-                    child: const Text('Log In'),
+                    child: Text(
+                      'Log In',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
                   )
                 ],
               )

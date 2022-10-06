@@ -1,5 +1,6 @@
 import 'package:chat_app/features/home/pages/chat_room.dart';
 import 'package:chat_app/features/home/providers/user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,11 +22,15 @@ class _UserListPageState extends State<UserListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Select user'),
       ),
       body: Consumer<UserProvider>(
         builder: (context, userProvider, child) {
-          final users = userProvider.usersList;
+          final users = userProvider.usersList
+            ..removeWhere(
+              (element) => element.id == FirebaseAuth.instance.currentUser!.uid,
+            );
           return ListView.builder(
             padding: const EdgeInsets.all(5),
             itemCount: users.length,

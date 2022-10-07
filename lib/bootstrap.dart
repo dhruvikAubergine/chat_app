@@ -9,8 +9,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:chat_app/features/home/modals/user_profile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -28,6 +30,11 @@ class AppBlocObserver extends BlocObserver {
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(UserProfileAdapter());
+
+  await Hive.openBox('App Service Box');
 
   await Firebase.initializeApp();
   FlutterError.onError = (details) {

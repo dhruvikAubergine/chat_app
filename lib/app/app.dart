@@ -8,18 +8,31 @@
 import 'package:chat_app/features/authentication/pages/Authentication_page.dart';
 import 'package:chat_app/features/authentication/pages/sign_up_page.dart';
 import 'package:chat_app/features/home/pages/home_page.dart';
+import 'package:chat_app/features/home/pages/profile_page.dart';
 import 'package:chat_app/features/home/pages/user_list_page.dart';
 import 'package:chat_app/features/home/providers/chats_provider.dart';
 import 'package:chat_app/features/home/providers/user_provider.dart';
 import 'package:chat_app/l10n/l10n.dart';
+import 'package:chat_app/services/app_service.dart';
 import 'package:chat_app/utils/app_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    AppService.instance.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +40,7 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ChatsProvider()),
+        // ChangeNotifierProvider(create: (context) => AppService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,6 +64,14 @@ class App extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               Provider.of<UserProvider>(context, listen: false).getUsers();
+              // Future.delayed(
+              //   const Duration(seconds: 2),
+              //   () {},
+              // );
+              // AppService.instance.currentUser =
+              //     Provider.of<UserProvider>(context).getUserById(
+              //   FirebaseAuth.instance.currentUser!.uid,
+              // );
               Future.delayed(
                 const Duration(seconds: 2),
                 () {},
@@ -63,7 +85,7 @@ class App extends StatelessWidget {
         routes: {
           HomePage.routeName: (context) => const HomePage(),
           SignUpPage.routeName: (context) => const SignUpPage(),
-          // ProfilePage.routeName: (context) => const ProfilePage(),
+          ProfilePage.routeName: (context) => const ProfilePage(),
           UserListPage.routeName: (context) => const UserListPage(),
           AuthenticationPage.routeName: (context) => const AuthenticationPage(),
         },

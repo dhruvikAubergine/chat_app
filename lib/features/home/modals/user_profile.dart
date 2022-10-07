@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_profile.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: 1)
 class UserProfile extends Equatable {
   const UserProfile({
     this.id,
@@ -15,10 +17,15 @@ class UserProfile extends Equatable {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
+  @HiveField(0)
   final String? id;
+  @HiveField(1)
   final String? email;
+  @HiveField(2)
   final String? fullName;
+  @HiveField(3)
   final int? phone;
+  @HiveField(4)
   final String? profilePictureUrl;
 
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);

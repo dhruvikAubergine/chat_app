@@ -34,8 +34,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> setUserDetails() async {
-    userProfile = await Provider.of<UserProvider>(context, listen: false)
-        .fetchCurrentUser(FirebaseAuth.instance.currentUser!.uid);
+    // userProfile = await Provider.of<UserProvider>(context, listen: false)
+    //     .fetchCurrentUser(FirebaseAuth.instance.currentUser!.uid);
+
+    if (!mounted) return;
+    userProfile = AppService.instance.currentUser ??
+        await Provider.of<UserProvider>(context, listen: false)
+            .fetchCurrentUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -47,18 +52,20 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.account_circle_rounded),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ProfilePage(userProfile: userProfile);
-                  },
-                ),
-              );
-              // Navigator.pushNamed(
-              //   context,
-              //   ProfilePage.routeName,
+            onPressed: () async {
+              // Navigator.of(context).push(
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return const ProfilePage();
+              //     },
+              //   ),
               // );
+              // await FirebaseAuth.instance.signOut();
+              // await AppService.instance.terminate();
+              await Navigator.pushNamed(
+                context,
+                ProfilePage.routeName,
+              );
             },
           )
           // DropdownButton(
@@ -136,8 +143,8 @@ class _HomePageState extends State<HomePage> {
                   break;
                 }
               }
-              final user =
-                  Provider.of<UserProvider>(context).getUserById(peerId);
+              final user = Provider.of<UserProvider>(context, listen: false)
+                  .getUserById(peerId);
               return ListTile(
                 leading: isNewMessageArrived
                     ? Badge(

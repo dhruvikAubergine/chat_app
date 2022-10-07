@@ -43,13 +43,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         email: email,
         password: password,
       );
-      await Future.delayed(const Duration(seconds: 2));
+      // await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
       final user = await Provider.of<UserProvider>(context, listen: false)
           .fetchCurrentUser(authCredential.user!.uid);
-      AppService.instance.updateCurrentUser(user);
+      await AppService.instance.updateCurrentUser(user);
 
-      setState(() => _isLoading = false);
+      _isLoading = false;
 
       if (!mounted) return;
       await Navigator.of(context).pushReplacementNamed(HomePage.routeName);
@@ -59,14 +59,15 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       if (error.message != null) {
         message = error.message!;
       }
-      setState(() => _isLoading = false);
+      _isLoading = false;
+
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(message)));
     } catch (error) {
       log('$error');
       final errorMessage =
           error.toString().substring(error.toString().indexOf(']') + 2);
-      setState(() => _isLoading = false);
+      _isLoading = false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(errorMessage),

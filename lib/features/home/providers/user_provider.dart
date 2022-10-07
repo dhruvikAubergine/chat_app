@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:chat_app/features/home/modals/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,7 +19,7 @@ class UserProvider extends ChangeNotifier {
           return UserProfile.fromJson(data);
         }).toList();
         for (final element in usersList) {
-          log(element.toString());
+          // log(element.toString());
         }
         notifyListeners();
       },

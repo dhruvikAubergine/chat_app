@@ -117,7 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
         phone: phone,
         profilePictureUrl: profilePictureUrl,
       );
-      AppService.instance.updateCurrentUser(user);
+      await AppService.instance.updateCurrentUser(user);
       setState(() => _isLoading = false);
 
       if (!mounted) return;

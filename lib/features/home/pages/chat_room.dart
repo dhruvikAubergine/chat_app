@@ -50,8 +50,6 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     super.initState();
     widget.convoId ??= getConvoId(currentUserId, widget.peerUser.id!);
-    // Provider.of<ChatsProvider>(context, listen: false)
-    //     .getChats(widget.convoId!);
   }
 
   @override
@@ -208,10 +206,3 @@ class _ChatRoomState extends State<ChatRoom> {
     );
   }
 }
-
-// class Temp {
-//   Temp({required this.msg, required this.isSender});
-
-//   final String msg;
-//   final bool isSender;
-// }

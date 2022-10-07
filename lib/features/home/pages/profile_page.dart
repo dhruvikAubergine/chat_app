@@ -96,8 +96,6 @@ class _ProfilePageState extends State<ProfilePage> {
         profilePictureUrl: profilePictureUrl,
       );
       if (!mounted) return;
-      // Provider.of<AppService>(context, listen: false).updateCurrentUser(user);
-
       await AppService.instance.updateCurrentUser(user);
       userProfile = AppService.instance.currentUser!;
       setState(() {});

@@ -40,7 +40,6 @@ class _AppState extends State<App> {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ChatsProvider()),
-        // ChangeNotifierProvider(create: (context) => AppService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -43,7 +43,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         email: email,
         password: password,
       );
-      // await Future.delayed(const Duration(seconds: 2));
       if (!mounted) return;
       final user = await Provider.of<UserProvider>(context, listen: false)
           .fetchCurrentUser(authCredential.user!.uid);

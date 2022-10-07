@@ -46,3 +46,4 @@ flutter:
 
   assets:
     - assets/images/person.png
+    - assets/images/no_conversation.png

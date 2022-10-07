@@ -72,7 +72,6 @@ class _SignUpPageState extends State<SignUpPage> {
     final password = _passwordController.text;
     final email = _emailController.text.trim();
     final fullName = _fullNameController.text.trim();
-    // final phone = _phoneController.text.trim();
     final phone = int.parse(_phoneController.text.trim());
 
     if (_storedFile == null) {

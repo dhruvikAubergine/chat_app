@@ -40,40 +40,6 @@ class ChatsProvider extends ChangeNotifier {
     }
   }
 
-  // void getChats(String convoId) {
-  //   try {
-  //     _chatSubscription = _db
-  //         .collection('chats')
-  //         .doc(convoId)
-  //         .collection(convoId)
-  //         .orderBy('timestamp', descending: true)
-  //         .snapshots()
-  //         .listen((snapshot) {
-  //       chats = snapshot.docs.map((document) {
-  //         final data = document.data()..putIfAbsent('id', () => document.id);
-  //         return Message.fromJson(data);
-  //       }).toList();
-  //       notifyListeners();
-  //     });
-  //   } catch (error) {
-  //     dev.log(error.toString());
-  //   }
-  // }
-
-  // Future<UserProfile> getUserById(String id) async {
-  //   UserProfile user;
-  //   final docSnapshot = await _db.collection('users').doc(id).get();
-  //   //     .then((value) => user = UserProfile.fromJson(value.data()!));
-  //   // return user;
-
-  //   if (docSnapshot.exists) {
-  //     user = UserProfile.fromJson(docSnapshot.data()!);
-  //   } else {
-  //     return const UserProfile();
-  //   }
-  //   return user;
-  // }
-
   void updateMessageRead(String convoId, String messageId) {
     _db.collection('chats').doc(convoId).collection(convoId).doc(messageId).set(
       {'read': true},

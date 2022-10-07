@@ -18,9 +18,6 @@ class UserProvider extends ChangeNotifier {
           final data = document.data()..putIfAbsent('id', () => document.id);
           return UserProfile.fromJson(data);
         }).toList();
-        for (final element in usersList) {
-          // log(element.toString());
-        }
         notifyListeners();
       },
     );

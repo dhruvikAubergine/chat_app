@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+/// Provides the login page with text field and options to login into the app.
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
   static const routeName = '/auth-page';

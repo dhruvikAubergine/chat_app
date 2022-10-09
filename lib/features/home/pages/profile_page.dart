@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a user profiles details.
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
   static const routeName = '/profile-page';

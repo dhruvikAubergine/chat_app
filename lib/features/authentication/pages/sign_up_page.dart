@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// Providers a sign up page with fields for user details to create a new accound.
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
   static const routeName = '/signin-page';

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/widgets.dart';
 
+/// Provides a methods to manage user.
 class UserProvider extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final currentUserId = auth.FirebaseAuth.instance.currentUser!.uid;

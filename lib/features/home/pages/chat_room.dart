@@ -10,6 +10,7 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_3.dart';
 import 'package:provider/provider.dart';
 
+/// Provides the list of message of a particular user and an option to send a new message.
 class ChatRoom extends StatefulWidget {
   ChatRoom({
     super.key,

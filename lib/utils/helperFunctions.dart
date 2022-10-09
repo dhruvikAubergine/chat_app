@@ -1,10 +1,7 @@
 import 'package:intl/intl.dart';
 
+/// Provides a methods to manage dateTime objects.
 class HelperFunctions {
-  static String getConvoID(String uid, String pid) {
-    return uid.hashCode <= pid.hashCode ? '${uid}_$pid' : '${pid}_$uid';
-  }
-
   static String getTime(String timestamp) {
     final dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp));
     DateFormat format;
@@ -30,11 +27,16 @@ class HelperFunctions {
       time = 'Today';
     } else if (48 > duration.inHours) {
       time = 'Yesterday';
+    } else if (365 > duration.inDays) {
+      final msgDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(timestamp),
+      );
+      time = DateFormat.MMMd().format(msgDate);
     } else {
       final msgDate = DateTime.fromMillisecondsSinceEpoch(
         int.parse(timestamp),
       );
-      time = DateFormat('d mmm').format(msgDate);
+      time = DateFormat.yMMMd().format(msgDate);
     }
     return time;
   }

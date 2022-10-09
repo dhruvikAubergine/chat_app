@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides a list of user with whom you can chat.
 class UserListPage extends StatefulWidget {
   const UserListPage({super.key});
   static const routeName = '/user-list-page';

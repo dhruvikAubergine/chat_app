@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/widgets.dart';
 
+/// Provides a methods to manage chats.
 class ChatsProvider extends ChangeNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final userId = auth.FirebaseAuth.instance.currentUser!.uid;
@@ -20,7 +21,7 @@ class ChatsProvider extends ChangeNotifier {
     try {
       _conversationSubscription = _db
           .collection('chats')
-          // .orderBy('lastMessage.timestamp', descending: true)
+          .orderBy('lastMessage.timestamp', descending: true)
           .where(
             'users',
             arrayContains: auth.FirebaseAuth.instance.currentUser!.uid,

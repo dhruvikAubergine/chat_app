@@ -10,6 +10,7 @@ import 'package:chat_app/utils/helperFunctions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Provides the main home page of the application[list of chats].
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   static const routeName = '/home-page';

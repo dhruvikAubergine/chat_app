@@ -42,7 +42,6 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => ChatsProvider()),
       ],
-      child: MaterialApp(
       child: DynamicColorBuilder(
         builder: (ColorScheme? lightColorScheme,ColorScheme? darkColorScheme ) {
           return MaterialApp(

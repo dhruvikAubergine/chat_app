@@ -15,6 +15,7 @@ import 'package:chat_app/features/home/providers/user_provider.dart';
 import 'package:chat_app/l10n/l10n.dart';
 import 'package:chat_app/services/app_service.dart';
 import 'package:chat_app/utils/app_theme.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -42,51 +43,48 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => ChatsProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          primaryColor: const Color(0xff7C7B9B),
-          colorScheme: AppTheme.lightColorScheme
-              .copyWith(secondary: const Color(0xffFCAAAB)),
-        ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          colorScheme: AppTheme.darkColorScheme,
-        ),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.data != null) {
-              Provider.of<UserProvider>(context, listen: false).getUsers();
-              // Future.delayed(
-              //   const Duration(seconds: 2),
-              //   () {},
-              // );
-              // AppService.instance.currentUser =
-              //     Provider.of<UserProvider>(context).getUserById(
-              //   FirebaseAuth.instance.currentUser!.uid,
-              // );
-              Future.delayed(
-                const Duration(seconds: 2),
-                () {},
-              );
-              return const HomePage();
-            } else {
-              return const AuthenticationPage();
-            }
-          },
-        ),
-        routes: {
-          HomePage.routeName: (context) => const HomePage(),
-          SignUpPage.routeName: (context) => const SignUpPage(),
-          ProfilePage.routeName: (context) => const ProfilePage(),
-          UserListPage.routeName: (context) => const UserListPage(),
-          AuthenticationPage.routeName: (context) => const AuthenticationPage(),
+      child: DynamicColorBuilder(
+        builder: (ColorScheme? lightColorScheme,ColorScheme? darkColorScheme ) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme(lightColorScheme),
+            darkTheme: AppTheme.darkTheme(darkColorScheme),
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  Provider.of<UserProvider>(context, listen: false).getUsers();
+                  // Future.delayed(
+                  //   const Duration(seconds: 2),
+                  //   () {},
+                  // );
+                  // AppService.instance.currentUser =
+                  //     Provider.of<UserProvider>(context).getUserById(
+                  //   FirebaseAuth.instance.currentUser!.uid,
+                  // );
+                  Future.delayed(
+                    const Duration(seconds: 2),
+                    () {},
+                  );
+                  return const HomePage();
+                } else {
+                  return const AuthenticationPage();
+                }
+              },
+            ),
+            routes: {
+              HomePage.routeName: (context) => const HomePage(),
+              SignUpPage.routeName: (context) => const SignUpPage(),
+              ProfilePage.routeName: (context) => const ProfilePage(),
+              UserListPage.routeName: (context) => const UserListPage(),
+              AuthenticationPage.routeName: (context) => const AuthenticationPage(),
+            },
+          );
         },
       ),
     );

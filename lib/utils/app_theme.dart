@@ -33,6 +33,24 @@ abstract class AppTheme {
     surfaceTint: Color(0xFF3946EA),
   );
 
+  static ThemeData lightTheme(ColorScheme? lightColorScheme) {
+    final scheme = lightColorScheme ??
+        AppTheme.lightColorScheme.copyWith(secondary: const Color(0xffFCAAAB));
+    return ThemeData(
+      useMaterial3: true,
+      primaryColor: const Color(0xff7C7B9B),
+      colorScheme: scheme,
+    );
+  }
+
+  static ThemeData darkTheme(ColorScheme? darkColorScheme) {
+    final scheme = darkColorScheme ?? AppTheme.darkColorScheme;
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: scheme,
+    );
+  }
+
   static const darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFBEC2FF),

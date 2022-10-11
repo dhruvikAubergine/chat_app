@@ -87,7 +87,6 @@ class _ChatRoomState extends State<ChatRoom> {
                   ..putIfAbsent('id', () => document.id);
                 return Message.fromJson(data);
               }).toList();
-              // final messages = chatsProvider.chats;
               return Column(
                 children: [
                   Expanded(

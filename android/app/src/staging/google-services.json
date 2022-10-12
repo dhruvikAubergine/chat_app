@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:463969560123:android:5c62808e303b4c5cc85e1e",
         "android_client_info": {
-          "package_name": "com.example.verygoodcore.chat_app.dev"
+          "package_name": "com.example.verygoodcore.chat_app.stg"
         }
       },
       "oauth_client": [

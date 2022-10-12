@@ -43,7 +43,7 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(create: (context) => ChatsProvider()),
       ],
       child: DynamicColorBuilder(
-        builder: (ColorScheme? lightColorScheme,ColorScheme? darkColorScheme ) {
+        builder: (ColorScheme? lightColorScheme, ColorScheme? darkColorScheme) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme(lightColorScheme),
@@ -81,7 +81,8 @@ class _AppState extends State<App> {
               SignUpPage.routeName: (context) => const SignUpPage(),
               ProfilePage.routeName: (context) => const ProfilePage(),
               UserListPage.routeName: (context) => const UserListPage(),
-              AuthenticationPage.routeName: (context) => const AuthenticationPage(),
+              AuthenticationPage.routeName: (context) =>
+                  const AuthenticationPage(),
             },
           );
         },

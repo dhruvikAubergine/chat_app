@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
       body: Consumer<ChatsProvider>(
         builder: (context, value, child) {
           final conversations = value.conversations;
+
           if (conversations.isEmpty) {
             return Center(
               child: Column(

@@ -58,14 +58,6 @@ class _AppState extends State<App> {
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
                   Provider.of<UserProvider>(context, listen: false).getUsers();
-                  // Future.delayed(
-                  //   const Duration(seconds: 2),
-                  //   () {},
-                  // );
-                  // AppService.instance.currentUser =
-                  //     Provider.of<UserProvider>(context).getUserById(
-                  //   FirebaseAuth.instance.currentUser!.uid,
-                  // );
                   Future.delayed(
                     const Duration(seconds: 2),
                     () {},

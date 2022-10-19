@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:badges/badges.dart';
-import 'package:chat_app/features/authentication/pages/Authentication_page.dart';
+import 'package:chat_app/features/authentication/pages/authentication_page.dart';
 import 'package:chat_app/features/home/modals/user_profile.dart';
 import 'package:chat_app/features/home/providers/chats_provider.dart';
 import 'package:chat_app/features/home/providers/user_provider.dart';

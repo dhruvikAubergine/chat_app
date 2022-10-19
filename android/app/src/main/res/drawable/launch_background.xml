@@ -4,5 +4,6 @@
     <item android:drawable="?android:colorBackground" />
 
     <!-- You can insert your own image assets here -->
+    
     <item android:gravity="center" android:drawable="@mipmap/ic_launcher" />
 </layer-list>

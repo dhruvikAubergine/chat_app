@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:chat_app/features/authentication/widgets/login_widget.dart';
+import 'package:chat_app/features/authentication/widgets/login_form.dart';
 import 'package:chat_app/features/authentication/pages/authentication_page.dart';
 import 'package:chat_app/features/home/pages/home_page.dart';
 import 'package:chat_app/features/home/pages/profile_page.dart';
@@ -73,7 +73,7 @@ class _AppState extends State<App> {
               // SignUpPage.routeName: (context) => const SignUpPage(),
               ProfilePage.routeName: (context) => const ProfilePage(),
               UserListPage.routeName: (context) => const UserListPage(),
-              LoginWidget.routeName: (context) => const AuthenticationPage()
+              LoginForm.routeName: (context) => const AuthenticationPage()
               // const AuthenticationPage(),
             },
           );
